@@ -1,7 +1,2 @@
 #!/usr/bin/with-contenv bash
-
 chmod +x /healthcheck.sh 
-
-# permissions
-chown -R abc:abc \
-	/transcode

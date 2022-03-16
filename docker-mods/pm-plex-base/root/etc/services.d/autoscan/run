@@ -2,7 +2,7 @@
 
 if [ ${ENABLE_AUTOSCAN} == "true" ]; then
     echo "[Autoscan] waiting for Plex service to be ready"
-    s6-svwait ../plex && sleep 15
+    s6-svwait ../plex && sleep 60
 
     echo "[Autoscan] autoscan starting..."
     exec s6-setuidgid abc /autoscan/autoscan --config=/autoscan/autoscan_config.yml --database=/autoscan/autoscan.db --log=/autoscan/autoscan.log -v

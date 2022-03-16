@@ -1,8 +1,8 @@
 #!/usr/bin/with-contenv bash
 
 # Set Variables for RClone VFS caching
-DIR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-10m}
-ATTR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-10m}
+DIR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-500h}
+ATTR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-500h}
 POLL_INTERVAL_TIME=${RCLONE_DIR_CACHE_TIME:-15s}
 
 # Rclone config file and rclone logs dir are located in init-d 26-config
@@ -10,4 +10,4 @@ POLL_INTERVAL_TIME=${RCLONE_DIR_CACHE_TIME:-15s}
 umask 022
 
 exec \
-	s6-setuidgid abc rclone --config=${RCLONE_CONFIG_FILE} --log-file=${RCLONE_LOGS_DIR}${SERVICE_NAME}.log -v --stats-log-level INFO --dir-cache-time ${DIR_CACHE_TIME} --buffer-size ${BUFFER_SIZE:-64M} --attr-timeout ${ATTR_CACHE_TIME} --poll-interval ${POLL_INTERVAL_TIME} ${RCLONE_RC_OPTIONS} ${RCLONE_TD_MOUNT_EXTRA_OPTS} mount ${RCLONE_CONFIG_NAME}: /${MEDIA_RCLONE_MOUNT}
+	s6-setuidgid abc rclone --config=${RCLONE_CONFIG_FILE} --log-file=${RCLONE_LOGS_DIR}${SERVICE_NAME}.log -v --stats-log-level INFO --dir-cache-time ${DIR_CACHE_TIME} --buffer-size ${BUFFER_SIZE:-32M} --attr-timeout ${ATTR_CACHE_TIME} --poll-interval ${POLL_INTERVAL_TIME} ${RCLONE_RC_OPTIONS} ${RCLONE_TD_MOUNT_EXTRA_OPTS} mount ${RCLONE_CONFIG_NAME}: /${MEDIA_RCLONE_MOUNT}
