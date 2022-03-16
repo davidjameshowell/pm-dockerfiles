@@ -1,0 +1,49 @@
+name: "Build PM Modified LSIO Docker Images"
+
+on: push
+
+jobs:
+  build-sonarr-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: pm-lsio-sonarr
+          dockerfile: sonarr/Dockerfile
+          addLatest: true
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT_TOKEN }}
+
+  build-radarr-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: pm-lsio-radarr
+          dockerfile: radarr/Dockerfile
+          addLatest: true
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT_TOKEN }}
+
+  build-plex-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: pm-lsio-plex
+          dockerfile: plex/Dockerfile
+          addLatest: true
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT_TOKEN }}

@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+[[ -z "$RCLONE_CONFIG_NAME" ]] && { echo "Parameter RCLONE_CONFIG_NAME is required" ; exit 1; }
+
+echo "[SARotate] Chown'ing SA Rotate files"
+chown -R abc:abc /etc/services.d/sa-rotate
+chmod +x /etc/services.d/sa-rotate/run
+chmod +x /etc/services.d/sa-rotate/rotate.sh

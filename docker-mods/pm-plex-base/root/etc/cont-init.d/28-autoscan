@@ -1,0 +1,43 @@
+#!/usr/bin/with-contenv bash
+
+# If the first run completed successfully, we are done
+if [ -e /.plexAutoscanConfigure ]; then
+  exit 0
+fi
+
+if [ ${ENABLE_AUTOSCAN} == "true" ]; then
+  rm -rf /autoscan/autoscan
+  # # Configure Autoscan with latest release
+  # curl -s https://api.github.com/repos/Cloudbox/autoscan/releases/latest \
+  # | grep "browser_download_url.*linux_amd64" \
+  # | cut -d : -f 2,3 \
+  # | tr -d \" \
+  # | wget -O /autoscan/autoscan -qi -  
+  # Configure Autoscan with Bernard-RS implementation
+  chamber read -q $SERVICE_ACCOUNT_ROOT $TOKEN_AUTH_KEY > /tmp/token_auth.json
+  TOKEN_AUTH=$(cat /tmp/token_auth.json | jq --raw-output '.token_auth')
+  # Obtain real IP address for IP filtering
+  FILTERED_IP=$(curl 'https://showmethisip.com/api' | jq --raw-output '.ip')
+  # Construct Token Auth
+  AUTOSCAN_TOKEN_DOWNLOAD_URL=$(curl "https://${TOKEN_AUTH_HOST}/?key=${TOKEN_AUTH}&filepath=${TOKEN_AUTH_AUTOSCAN_FILEPATH}&cdnurl=${CDN_BASE_URL}&filteredip=${FILTERED_IP}" | jq --raw-output .url)
+  # Download tokenized file
+  curl ${ADDL_CURL_OPTS} -o /autoscan/autoscan ${AUTOSCAN_TOKEN_DOWNLOAD_URL}
+  # Configure A-Train
+  rm -rf /autoscan/a-train
+  # Obtain raw token from secrets
+  TOKEN_AUTH=$(cat /tmp/token_auth.json | jq --raw-output '.token_auth')
+  # Obtain real IP address for IP filtering
+  FILTERED_IP=$(curl 'https://showmethisip.com/api' | jq --raw-output '.ip')
+  # Construct Token Auth
+  ATRAIN_TOKEN_DOWNLOAD_URL=$(curl "https://${TOKEN_AUTH_HOST}/?key=${TOKEN_AUTH}&filepath=${TOKEN_AUTH_AUTOSCAN_ATRAIN_FILEPATH}&cdnurl=${CDN_BASE_URL}&filteredip=${FILTERED_IP}" | jq --raw-output .url)
+  # Download tokenized file
+  curl ${ADDL_CURL_OPTS} -o /autoscan/a-train ${ATRAIN_TOKEN_DOWNLOAD_URL}
+  chmod +x /autoscan/a-train
+  chmod +x /autoscan/autoscan
+  chown -R abc:abc /autoscan
+  rm /tmp/token_auth.json
+else
+  echo "Not configuring NextGen PAS, skipping..."
+fi
+
+touch ./plexAutoscanConfigure

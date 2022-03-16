@@ -1,0 +1,89 @@
+#!/usr/bin/with-contenv bash
+
+# If the first run completed successfully, we are done
+if [ -e /.firstPMBaseRunComplete ]; then
+  exit 0
+fi
+
+# Variable check - required for operation!
+[[ -z "$MEDIA_RCLONE_MOUNT" ]] && { echo "Parameter MEDIA_RCLONE_MOUNT is required" ; exit 1; }
+[[ -z "$RCLONE_CHAMBER_SERVICE" ]] && { echo "Parameter RCLONE_CHAMBER_SERVICE is required" ; exit 1; }
+[[ -z "$RCLONE_CHAMBER_KEY" ]] && { echo "Parameter RCLONE_CHAMBER_KEY is required" ; exit 1; }
+[[ -z "$SERVICE_NAME" ]] && { echo "Parameter SERVICE_NAME is required" ; exit 1; }
+[[ -z "$RCLONE_CONFIG_NAME" ]] && { echo "Parameter RCLONE_CONFIG_NAME is required" ; exit 1; }\
+
+# Default coded
+RCLONE_LOGS_DIR=${RCLONE_LOGS_DIR:-/rclone-logs/}
+RCLONE_CONFIG_FILE=${RCLONE_CONFIG_FILE:-/rclone/rclone.conf}
+
+mkdir -p /cloudflared-configs
+cp -R /tmp/*.yml /cloudflared-configs/
+chown -R abc:abc /cloudflared-configs
+
+# Check if we're using Ubuntu or Alpine, then do appropriate
+if ! command -v apk &> /dev/null
+then
+    echo "[BASE] Installing fuse and vim."
+    apt-get update && \
+    apt-get install -y \
+     curl fuse vim jq && \
+    echo "**** cleanup ****" && \
+    apt-get clean && \
+    rm -rf \
+        /tmp/* \
+        /var/lib/apt/lists/* \
+        /var/tmp/*
+else
+    apk add --no-cache curl fuse vim jq
+     rm -rf \
+	/root/.cache \
+	/tmp/*
+fi
+
+echo "[BASE] Creaing RClone folder, cleaning out if anything appears, and making required directories."
+mkdir -p /${MEDIA_RCLONE_MOUNT}
+#Clean out ${MEDIA_RCLONE_MOUNT} folder
+rm -rf /${MEDIA_RCLONE_MOUNT}/*
+
+mkdir -p /rclone
+mkdir -p ${RCLONE_LOGS_DIR}
+
+chown -R abc:abc /usr/local/bin
+
+chamber read -q $RCLONE_CHAMBER_SERVICE $RCLONE_CHAMBER_KEY > /rclone/rclone.conf
+chamber read -q $SERVICE_ACCOUNT_ROOT $TOKEN_AUTH_KEY > /tmp/token_auth.json
+
+# Obtain raw token from secrets
+TOKEN_AUTH=$(cat /tmp/token_auth.json | jq --raw-output '.token_auth')
+# Obtain real IP address for IP filtering
+FILTERED_IP=$(curl 'https://showmethisip.com/api' | jq --raw-output '.ip')
+# Construct Token Auth
+TOKEN_DOWNLOAD_URL=$(curl "https://${TOKEN_AUTH_HOST}/?key=${TOKEN_AUTH}&filepath=${TOKEN_AUTH_FILEPATH}&cdnurl=${CDN_BASE_URL}&filteredip=${FILTERED_IP}" | jq --raw-output .url)
+# Download tokenized file
+curl ${ADDL_CURL_OPTS} -o /tmp${TOKEN_AUTH_FILEPATH} ${TOKEN_DOWNLOAD_URL}
+
+tar -xvf /tmp${TOKEN_AUTH_FILEPATH} -C /
+
+rm /tmp${TOKEN_AUTH_FILEPATH}
+rm /tmp/token_auth.json
+
+echo "[BASE] Begin Chown effect"
+# permissions
+chown -R abc:abc \
+	/rclone \
+	/rclone-logs \
+	/service_account_keys \
+	/${MEDIA_RCLONE_MOUNT} \
+	/dev/fuse
+
+echo "[BASE] Begin chown for non-plex services"
+
+if [ ${SERVICE_NAME} != "plex" ] 
+then
+    chown -R abc:abc \
+	/opt \
+    /config
+fi
+
+# Touch first run file to ensure that we are not redoing already created tasks.
+touch /.firstPMBaseRunComplete
