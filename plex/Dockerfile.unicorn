@@ -22,7 +22,7 @@ FROM linuxserver/plex:$LSIO_IMAGE_VERSION
 COPY --from=buildstage /root-layer/ /
 COPY docker-mods/rclone-rotate-service-account/root/ /
 COPY docker-mods/pm-plex-base/root/ /
-COPY pm-unicorn-ffmpeg/root/ /
+COPY docker-mods/pm-unicorn-ffmpeg/root/ /
 
 HEALTHCHECK --interval=10s --timeout=8s CMD /healthcheck.sh || exit 1
 

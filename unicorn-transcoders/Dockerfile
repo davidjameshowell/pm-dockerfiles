@@ -22,7 +22,7 @@ FROM lsiobase/ubuntu:$LSIO_IMAGE_VERSION
 COPY --from=buildstage /root-layer/ /
 COPY docker-mods/rclone-rotate-service-account/root/ /
 COPY docker-mods/pm-plex-base/root/ /
-COPY plex-unicorn-transcoder/root/ /
+COPY docker-mods/plex-unicorn-transcoder/root/ /
 
 HEALTHCHECK --interval=10s --timeout=8s CMD /healthcheck.sh || exit 1
 
