@@ -1,0 +1,36 @@
+#!/usr/bin/with-contenv bash
+
+# If the first run completed successfully, we are done
+if [ -e /.firstUnicornTransRunComplete ]; then
+  exit 0
+fi
+
+export NODE_VERSION=14.18.2
+export NVM_DIR=/tmp/.nvm
+export PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+
+mkdir -p $NVM_DIR
+
+echo [UNICORN TRANSCODER] Install Node10 and setup UnicornTranscoder
+apt update && apt install git curl less -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - \
+    && . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} \
+	&& . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION} \
+	&& . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION} \
+	&& PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}" \
+	&& cd /opt \
+	&& git clone https://github.com/UnicornTranscoder/UnicornTranscoder \
+	&& cd /opt/UnicornTranscoder \
+	&& git checkout ${GIT_SHA:-d74bda5253dee27b795aec48c5d9958d58d97da6} \
+    && mkdir -p /root/.npm \
+	&& rm package-lock.json && sed -i 's/"lzma-native": "6.0.0",/"lzma-native": "8.0.1",/' package.json \
+    && npm install \
+    && npm run install \
+    && chmod +x "$NVM_DIR/nvm.sh" && chown -R abc:abc "$NVM_DIR" && chmod -R 777 "$NVM_DIR" \
+    && apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/*
+    
+# permissions
+chown -R abc:abc \
+	/opt/UnicornTranscoder /root/.npm
+
+touch ./firstUnicornTransRunComplete

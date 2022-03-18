@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+umask 022
+export NODE_VERSION=14.18.2
+export NVM_DIR=/tmp/.nvm
+export PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+
+exec \
+        s6-setuidgid abc "${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/npm" start --prefix /opt/UnicornTranscoder

@@ -1,0 +1,48 @@
+#!/usr/bin/with-contenv bash
+
+# We use 99 for config level in the event we need to update Plex via natural means, as we will need to replace the binaries.
+
+# If the first run completed successfully, we are done
+if [ -e /.firstUnicornRunComplete ]; then
+  exit 0
+fi
+
+export NODE_VERSION=14.18.2
+export NVM_DIR=/tmp/.nvm
+export PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+
+mkdir -p $NVM_DIR
+
+# Variable check - required for operation!
+[[ -z "$SERVER_PUBLIC" ]] && { echo "Parameter SERVER_PUBLIC is required" ; exit 1; }
+[[ -z "$LB_URL" ]] && { echo "Parameter LB_URL is required" ; exit 1; }
+
+echo [UNICORN FFMPEG] Install Node10 and setup UnicornFFMPEG
+apt update && apt install git curl gpgv gnupg -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - \
+    && . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} \
+	&& . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION} \
+	&& . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION} \
+	&& PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}" \
+	&& cd /opt \
+	&& git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
+	&& cd /opt/UnicornFFMPEG \
+	&& git checkout ${GIT_SHA:-c58be9cc682776859e0ad7bcf938aaf0ed46f28d} \
+	&& npm install pkg \
+	&& npm install --production \
+	&& npm start \
+    && apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/*
+
+echo "[UNICORN FFMPEG] Moving generated binary over to proper directory. Removing relay"
+ptrans_before=$(ls -l "/usr/lib/plexmediaserver/Plex Transcoder")
+echo "Size of Plex Transcoder before removal - ${ptrans_before}" 
+rm "/usr/lib/plexmediaserver/Plex Relay"
+rm "/usr/lib/plexmediaserver/Plex Transcoder"
+
+mv "/opt/UnicornFFMPEG/bin/Plex Transcoder-linux" "/usr/lib/plexmediaserver/Plex Transcoder"
+
+ptrans_after=$(ls -l "/usr/lib/plexmediaserver/Plex Transcoder")
+echo "Size of Plex Transcoder after removal - ${ptrans_after}" 
+
+# Touch first run file to ensure that we are not redoing already created tasks.
+touch /.firstUnicornRunComplete
