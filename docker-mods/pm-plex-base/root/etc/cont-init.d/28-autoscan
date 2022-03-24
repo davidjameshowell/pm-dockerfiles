@@ -22,9 +22,6 @@ if [ ${ENABLE_AUTOSCAN} == "true" ]; then
   chmod +x /autoscan/a-train
   chmod +x /autoscan/autoscan
   chown -R abc:abc /autoscan
-  rm /tmp/token_auth.json
-else
-  echo "Not configuring NextGen PAS, skipping..."
 fi
 
 touch ./plexAutoscanConfigure

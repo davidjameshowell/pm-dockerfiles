@@ -1,6 +1,8 @@
 name: "Build PM Modified LSIO Docker Images"
 
-on: push
+on: 
+  push:
+  workflow_dispatch:
 
 jobs:
   build-sonarr-image:
