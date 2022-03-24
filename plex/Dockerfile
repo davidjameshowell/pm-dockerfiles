@@ -16,7 +16,7 @@ RUN apk --update add wget unzip && \
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
-## Start LSIO Image
+## Start LSIO Image Build
 FROM linuxserver/plex:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
