@@ -1,4 +1,4 @@
-ARG LSIO_IMAGE_VERSION=focal-version-ca212daf
+ARG LSIO_IMAGE_VERSION=focal-version-2c335950
 FROM alpine:3.15.2 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.0}
