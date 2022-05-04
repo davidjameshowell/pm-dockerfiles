@@ -1,7 +1,7 @@
-ARG LSIO_IMAGE_VERSION=nightly-version-4.1.0.6182
-FROM alpine:3.15.2 AS buildstage
+ARG LSIO_IMAGE_VERSION=nightly-version-4.2.0.6243
+FROM alpine:3.15.4 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.0}
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
 ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
 ARG RCLONE_EXT=.zip
