@@ -1,5 +1,5 @@
-ARG LSIO_IMAGE_VERSION=focal-version-8d6d7014
-FROM alpine:3.13.6 AS buildstage
+ARG LSIO_IMAGE_VERSION=focal-version-2c335950
+FROM alpine:3.15.2 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip

@@ -1,5 +1,5 @@
-ARG LSIO_IMAGE_VERSION=1.25.7.5604-980a13e02-ls106
-FROM alpine:3.13.6 AS buildstage
+ARG LSIO_IMAGE_VERSION=1.26.0.5715-8cf78dab3-ls112
+FROM alpine:3.15.4 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
@@ -16,7 +16,7 @@ RUN apk --update add wget unzip && \
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
-## Start LSIO Image
+## Start LSIO Image Build
 FROM linuxserver/plex:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
