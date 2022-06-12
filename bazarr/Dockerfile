@@ -1,4 +1,4 @@
-ARG LSIO_IMAGE_VERSION=nightly-4.1.0.6031-ls261
+ARG LSIO_IMAGE_VERSION=development-version-v1.0.5-beta.25
 FROM alpine:3.13.6 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
@@ -17,7 +17,7 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image
-FROM linuxserver/radarr:$LSIO_IMAGE_VERSION
+FROM linuxserver/bazarr:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
 COPY docker-mods/rclone-rotate-service-account/root/ /
