@@ -1,5 +1,5 @@
-ARG LSIO_IMAGE_VERSION=focal-version-2c335950
-FROM alpine:3.15.2 AS buildstage
+ARG LSIO_IMAGE_VERSION=development-version-v1.0.5-beta.25
+FROM alpine:3.13.6 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
@@ -17,12 +17,7 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image
-FROM lsiobase/ubuntu:$LSIO_IMAGE_VERSION
+FROM linuxserver/bazarr:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
 COPY docker-mods/rclone-rotate-service-account/root/ /
-COPY docker-mods/pm-plex-base/root/ /
-COPY docker-mods/plex-unicorn-transcoder/root/ /
-
-HEALTHCHECK --interval=10s --timeout=8s CMD /healthcheck.sh || exit 1
-
