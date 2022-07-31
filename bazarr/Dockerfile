@@ -1,7 +1,7 @@
 ARG LSIO_IMAGE_VERSION=development-version-v1.0.5-beta.29
 FROM alpine:3.13.6 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1}
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.59.0}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
 ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
 ARG RCLONE_EXT=.zip
