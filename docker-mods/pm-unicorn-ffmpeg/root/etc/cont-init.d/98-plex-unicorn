@@ -19,19 +19,19 @@ mkdir -p $NVM_DIR
 
 echo [UNICORN FFMPEG] Install Node10 and setup UnicornFFMPEG
 apt update && apt install git curl gpgv gnupg -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - \
-    && . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} \
-	&& . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION} \
-	&& . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION} \
-	&& PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}" \
-	&& cd /opt \
-	&& git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
-	&& cd /opt/UnicornFFMPEG \
-	&& git checkout ${GIT_SHA:-c58be9cc682776859e0ad7bcf938aaf0ed46f28d} \
-	&& npm install pkg \
-	&& npm install --production \
-	&& npm start \
+    && . "$HOME/.nvm/nvm.sh" && nvm install ${NODE_VERSION} \
+        && . "$HOME/.nvm/nvm.sh" && nvm use v${NODE_VERSION} \
+        && . "$HOME/.nvm/nvm.sh" && nvm alias default v${NODE_VERSION} \
+        && PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}" \
+        && cd /opt \
+        && git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
+        && cd /opt/UnicornFFMPEG \
+        && git checkout ${GIT_SHA:-c58be9cc682776859e0ad7bcf938aaf0ed46f28d} \
+        && npm install pkg \
+        && npm install --production \
+        && npm start \
     && apt-get autoremove -y \
-	&& rm -rf /var/lib/apt/lists/*
+        && rm -rf /var/lib/apt/lists/*
 
 echo "[UNICORN FFMPEG] Moving generated binary over to proper directory. Removing relay"
 ptrans_before=$(ls -l "/usr/lib/plexmediaserver/Plex Transcoder")
