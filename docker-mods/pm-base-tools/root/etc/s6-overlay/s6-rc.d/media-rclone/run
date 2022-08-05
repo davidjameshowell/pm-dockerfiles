@@ -10,4 +10,4 @@ POLL_INTERVAL_TIME=${RCLONE_DIR_CACHE_TIME:-15s}
 umask 022
 
 exec \
-	s6-setuidgid abc rclone --config=${RCLONE_CONFIG_FILE} --log-file=${RCLONE_LOGS_DIR}${SERVICE_NAME}.log -v --stats-log-level INFO --dir-cache-time ${DIR_CACHE_TIME} --buffer-size ${BUFFER_SIZE:-32M} --attr-timeout ${ATTR_CACHE_TIME} --poll-interval ${POLL_INTERVAL_TIME} ${RCLONE_RC_OPTIONS} ${RCLONE_TD_MOUNT_EXTRA_OPTS} mount ${RCLONE_CONFIG_NAME}: /${MEDIA_RCLONE_MOUNT}
+	s6-setuidgid abc rclone --config=${RCLONE_CONFIG_FILE} --log-file=${RCLONE_LOGS_DIR}${SERVICE_NAME}.log -v --stats-log-level INFO --dir-cache-time ${DIR_CACHE_TIME} --buffer-size ${BUFFER_SIZE:-32M} --attr-timeout ${ATTR_CACHE_TIME} --poll-interval ${POLL_INTERVAL_TIME} ${RCLONE_RC_OPTIONS} ${RCLONE_TD_MOUNT_EXTRA_OPTS} mount ${RCLONE_CONFIG_NAME}: /${MEDIA_RCLONE_MOUNT} --daemon
