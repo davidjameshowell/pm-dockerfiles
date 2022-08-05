@@ -59,5 +59,7 @@ chown -R abc:abc \
 #     /opt \
 #     /config
 
+touch /etc/s6-overlay/s6-rc.d/user/contents.d/media-rclone
+
 # Touch first run file to ensure that we are not redoing already created tasks.
 touch /.firstPMBaseRunComplete
