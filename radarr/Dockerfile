@@ -13,7 +13,7 @@ RUN apk --update add wget unzip ffmpeg && \
   unzip /workdir/$RCLONE_FILENAME$RCLONE_EXT -d /workdir && \
   chmod a+x "/workdir/$RCLONE_FILENAME/rclone" && \
   mv /workdir/$RCLONE_FILENAME/rclone /root-layer/usr/local/bin/rclone && \
-  mv /usr/bin/ffprobe /root-layer/usr/bin/ffprobe
+  mv /usr/bin/ffprobe /root-layer/usr/local/bin/ffprobe
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
