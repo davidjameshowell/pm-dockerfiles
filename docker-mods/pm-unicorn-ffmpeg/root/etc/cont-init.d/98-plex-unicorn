@@ -30,7 +30,7 @@ apt update && apt install git curl gpgv gnupg -y && curl -o- https://raw.githubu
         && npm install pkg \
         && npm install --production \
         && npm start \
-    && apt-get autoremove -y \
+        && apt-get autoremove -y \
         && rm -rf /var/lib/apt/lists/*
 
 echo "[UNICORN FFMPEG] Moving generated binary over to proper directory. Removing relay"
