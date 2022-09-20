@@ -5,6 +5,8 @@ if [ -e /.firstLogViwerPMBase ]; then
   exit 0
 fi
 
+mkdir -p /root/.config/configstore/ && touch /root/.config/configstore/frontail.json
+chown -R abc:users /root/.config/configstore/frontail.json
 
 curl -L -o /usr/bin/frontail https://github.com/mthenw/frontail/releases/download/${FRONTAIL_VERSION:-v4.9.2}/frontail-linux
 chmod +x /usr/bin/frontail
