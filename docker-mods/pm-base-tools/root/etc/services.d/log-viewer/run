@@ -1,6 +1,19 @@
 #!/usr/bin/with-contenv bash
 
-umask 022
 
-exec \
-	s6-setuidgid abc /usr/bin/frontail -U ${FRONTAIL_USERNAME} -P ${FRONTAIL_PASSWORD}
+if [ ${ENABLE_LOGVIEWER} == "true" ]; then
+    echo "[LogViewer] waiting for RClone service to be ready"
+    s6-svwait ../media-rclone && sleep 60
+
+    echo "[LogViewer] LogViewer starting..."
+	umask 022
+
+	exec \
+		s6-setuidgid abc /usr/bin/frontail -U ${FRONTAIL_USERNAME} -P ${FRONTAIL_PASSWORD} ${LOGS_TO_TAIL:-/rclone-logs/*.log}
+else
+    while :
+    do
+        echo "Running script to keep service alive; [LogViewer] is not running"
+        sleep 86400
+    done
+fi
