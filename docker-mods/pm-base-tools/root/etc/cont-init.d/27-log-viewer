@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+# If the first run completed successfully, we are done
+if [ -e /.firstLogViwerPMBase ]; then
+  exit 0
+fi
+
+
+curl -o /usr/bin/frontail https://github.com/mthenw/frontail/releases/download/${FRONTAIL_VERSION:-v4.9.2}/frontail-linux
+chmod +x /usr/bin/frontail
+
+# Touch first run file to ensure that we are not redoing already created tasks.
+touch /.firstLogViwerPMBase
