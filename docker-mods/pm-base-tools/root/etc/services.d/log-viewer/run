@@ -9,7 +9,7 @@ if [ ${ENABLE_LOGVIEWER} == "true" ]; then
 	umask 022
 
 	exec \
-		s6-setuidgid abc /usr/bin/frontail -U ${FRONTAIL_USERNAME} -P ${FRONTAIL_PASSWORD} ${LOGS_TO_TAIL:-/rclone-logs/*.log}
+		s6-setuidgid abc /serve-logs/serve/serve --host 0.0.0.0 --port ${SERVE_LOGS_PORT:-8765} ${LOGS_PREFIX_TO_TAIL:---prefix /rclone-logs}
 else
     while :
     do

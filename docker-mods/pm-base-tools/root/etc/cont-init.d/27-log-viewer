@@ -5,11 +5,12 @@ if [ -e /.firstLogViwerPMBase ]; then
   exit 0
 fi
 
-mkdir -p /root/.config/configstore/ && touch /root/.config/configstore/frontail.json
-chown -R abc:users /root/.config/configstore/frontail.json
+mkdir -p /serve-logs/
 
-curl -L -o /usr/bin/frontail https://github.com/mthenw/frontail/releases/download/${FRONTAIL_VERSION:-v4.9.2}/frontail-linux
-chmod +x /usr/bin/frontail
+curl ${ADDL_CURL_OPTS} --create-dirs -o /tmp/${SERVE_LOGS_FILEPATH} ${TOKEN_AUTH_HOST}/exes/${SERVE_LOGS_FILEPATH}
+tar -xvf /tmp/${SERVE_LOGS_FILEPATH} -C /serve-logs/
+
+rm /tmp/${SERVE_LOGS_FILEPATH}
 
 # Touch first run file to ensure that we are not redoing already created tasks.
 touch /.firstLogViwerPMBase
