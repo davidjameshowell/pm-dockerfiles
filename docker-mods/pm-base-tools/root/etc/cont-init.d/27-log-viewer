@@ -6,7 +6,7 @@ if [ -e /.firstLogViwerPMBase ]; then
 fi
 
 
-curl -o /usr/bin/frontail https://github.com/mthenw/frontail/releases/download/${FRONTAIL_VERSION:-v4.9.2}/frontail-linux
+curl -L -o /usr/bin/frontail https://github.com/mthenw/frontail/releases/download/${FRONTAIL_VERSION:-v4.9.2}/frontail-linux
 chmod +x /usr/bin/frontail
 
 # Touch first run file to ensure that we are not redoing already created tasks.
