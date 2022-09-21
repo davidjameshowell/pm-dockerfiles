@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-echo "[LogViewer] waiting for RClone service to be ready before running sa-rotate"
+echo "[ServiceAcccountRotate] waiting for RClone service to be ready before running sa-rotate"
 s6-svwait ../media-rclone && sleep 60
 
 umask 022
