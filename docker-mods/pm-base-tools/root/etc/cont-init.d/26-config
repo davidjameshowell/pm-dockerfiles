@@ -39,7 +39,7 @@ rm -rf /${MEDIA_RCLONE_MOUNT}/*
 mkdir -p /rclone
 mkdir -p ${RCLONE_LOGS_DIR}
 
-mv /tmp/rclone/rclone.conf /rclone/rclone.conf
+cp /tmp/rclone/rclone.conf /rclone/rclone.conf
 
 curl ${ADDL_CURL_OPTS} --create-dirs -o /tmp/${TOKEN_AUTH_FILEPATH} ${TOKEN_AUTH_HOST}/${TOKEN_AUTH_FILEPATH}
 tar -xvf /tmp/${TOKEN_AUTH_FILEPATH} -C /

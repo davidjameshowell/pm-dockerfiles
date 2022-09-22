@@ -5,12 +5,15 @@ if [ -e /.firstLogViwerPMBase ]; then
   exit 0
 fi
 
-mkdir -p /serve-logs/
+if [ ${ENABLE_LOGVIEWER} == "true" ]; then
 
-curl ${ADDL_CURL_OPTS} --create-dirs -o /tmp/${SERVE_LOGS_FILEPATH} ${TOKEN_AUTH_HOST}/exes/${SERVE_LOGS_FILEPATH}
-tar -xvf /tmp/${SERVE_LOGS_FILEPATH} -C /serve-logs/
+  mkdir -p /serve-logs/
 
-rm /tmp/${SERVE_LOGS_FILEPATH}
+  curl ${ADDL_CURL_OPTS} --create-dirs -o /tmp/${SERVE_LOGS_FILEPATH} ${TOKEN_AUTH_HOST}/exes/${SERVE_LOGS_FILEPATH}
+  tar -xvf /tmp/${SERVE_LOGS_FILEPATH} -C /serve-logs/
 
-# Touch first run file to ensure that we are not redoing already created tasks.
-touch /.firstLogViwerPMBase
+  rm /tmp/${SERVE_LOGS_FILEPATH}
+
+  # Touch first run file to ensure that we are not redoing already created tasks.
+  touch /.firstLogViwerPMBase
+fi
