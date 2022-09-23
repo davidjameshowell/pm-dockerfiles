@@ -1,7 +1,7 @@
 ARG LSIO_IMAGE_VERSION=jammy-version-5c1bb520
 FROM alpine:3.15.5 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.59.1}
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.59.2}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
 ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
 ARG RCLONE_EXT=.zip

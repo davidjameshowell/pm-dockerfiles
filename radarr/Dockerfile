@@ -1,7 +1,7 @@
-ARG LSIO_IMAGE_VERSION=develop-4.2.0.6438-ls66
+ARG LSIO_IMAGE_VERSION=develop-version-4.2.3.6575
 FROM alpine:3.15.4 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.59.1}
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.59.2}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
 ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
 ARG RCLONE_EXT=.zip
@@ -24,12 +24,4 @@ FROM fluent/fluent-bit AS fluentbit
 FROM linuxserver/radarr:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
-COPY --from=fluentbit /fluent-bit /fluent-bit
-# Copy certificates
-COPY --from=fluentbit /usr/share/ca-certificates/  /usr/share/ca-certificates/
-COPY --from=fluentbit /etc/ssl/ /etc/ssl/
-
-COPY --from=fluentbit /lib/x86_64-linux-gnu/ /lib/x86_64-linux-gnu/
-
-COPY --from=fluentbit /fluent-bit /fluent-bit
 COPY docker-mods/rclone-rotate-service-account/root/ /
