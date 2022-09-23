@@ -17,7 +17,7 @@ RUN apk --update add wget unzip ffmpeg && \
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
-FROM cr.fluentbit.io/fluent/fluent-bit AS fluentbit
+FROM fluent/fluent-bit  AS fluentbit
 
 ## Start LSIO Image
 FROM linuxserver/radarr:$LSIO_IMAGE_VERSION
