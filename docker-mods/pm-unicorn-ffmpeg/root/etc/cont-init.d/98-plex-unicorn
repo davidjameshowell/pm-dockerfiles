@@ -19,9 +19,9 @@ mkdir -p $NVM_DIR
 
 echo [UNICORN FFMPEG] Install Node10 and setup UnicornFFMPEG
 apt update && apt install git curl gpgv gnupg -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash - \
-    && . "$HOME/.nvm/nvm.sh" && nvm install ${NODE_VERSION} \
-        && . "$HOME/.nvm/nvm.sh" && nvm use v${NODE_VERSION} \
-        && . "$HOME/.nvm/nvm.sh" && nvm alias default v${NODE_VERSION} \
+    && . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} \
+        && . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION} \
+        && . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION} \
         && PATH="/tmp/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}" \
         && cd /opt \
         && git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
