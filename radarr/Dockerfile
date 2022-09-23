@@ -17,8 +17,11 @@ RUN apk --update add wget unzip ffmpeg && \
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
+FROM cr.fluentbit.io/fluent/fluent-bit AS fluentbit
+
 ## Start LSIO Image
 FROM linuxserver/radarr:$LSIO_IMAGE_VERSION
 
 COPY --from=buildstage /root-layer/ /
+COPY --from=builder /fluent-bit /fluent-bit
 COPY docker-mods/rclone-rotate-service-account/root/ /
