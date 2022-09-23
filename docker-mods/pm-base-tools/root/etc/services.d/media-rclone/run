@@ -1,9 +1,9 @@
 #!/usr/bin/with-contenv bash
 
 # Set Variables for RClone VFS caching
-DIR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-500h}
-ATTR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-500h}
-POLL_INTERVAL_TIME=${RCLONE_DIR_CACHE_TIME:-15s}
+DIR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-999h}
+ATTR_CACHE_TIME=${RCLONE_DIR_CACHE_TIME:-1s}
+POLL_INTERVAL_TIME=${RCLONE_DIR_CACHE_TIME:-1s}
 
 # Rclone config file and rclone logs dir are located in init-d 26-config
 
