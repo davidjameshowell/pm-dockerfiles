@@ -1,18 +1,15 @@
 ARG LSIO_IMAGE_VERSION=1.31.3.6868-28fc46b27-ls160
 FROM alpine:3.17.1 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.62.2}
-ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
-ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
-ARG RCLONE_EXT=.zip
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.58.1-rd.2.2}
+ARG RCLONE_URL=https://github.com/itsToggle/rclone_RD/releases/download/${RCLONE_VERSION}/rclone-linux
 
 RUN apk --update add wget unzip && \
   mkdir -p /workdir/ && \
   mkdir -p /root-layer/usr/local/bin/ && \
-  wget -O /workdir/$RCLONE_FILENAME$RCLONE_EXT "$RCLONE_URL" && \
-  unzip /workdir/$RCLONE_FILENAME$RCLONE_EXT -d /workdir && \
-  chmod a+x "/workdir/$RCLONE_FILENAME/rclone" && \
-  mv /workdir/$RCLONE_FILENAME/rclone /root-layer/usr/local/bin/rclone
+  wget -O /workdir/rclone-linux "$RCLONE_URL" && \
+  chmod a+x "/workdir/rclone-linux" && \
+  mv /workdir/rclone-linux /root-layer/usr/local/bin/rclone
 
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
