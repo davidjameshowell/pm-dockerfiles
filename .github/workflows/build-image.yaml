@@ -61,6 +61,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_PAT_TOKEN }}
 
+  build-debrid-plex-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: pm-lsio-debrid-plex
+          dockerfile: plex/Dockerfile.debrid
+          addLatest: true
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PAT_TOKEN }}
+
   build-unicorn-plex-image:
     runs-on: ubuntu-latest
     steps:
