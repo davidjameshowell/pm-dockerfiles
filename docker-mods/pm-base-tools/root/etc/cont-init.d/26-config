@@ -17,7 +17,7 @@ then
     echo "[BASE] Installing fuse and vim."
     apt-get update && \
     apt-get install -y \
-     curl fuse fuse3 vim jq && \
+     curl fuse3 vim jq && \
     echo "**** cleanup ****" && \
     apt-get clean && \
     rm -rf \
@@ -25,7 +25,7 @@ then
         /var/lib/apt/lists/* \
         /var/tmp/*
 else
-    apk add --no-cache curl fuse fuse3 vim jq
+    apk add --no-cache curl fuse3 vim jq
      rm -rf \
 	/root/.cache \
 	/tmp/*
