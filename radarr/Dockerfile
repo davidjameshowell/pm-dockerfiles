@@ -1,4 +1,4 @@
-ARG LSIO_IMAGE_VERSION=nightly-version-4.5.1.7200
+ARG LSIO_IMAGE_VERSION=nightly-version-4.6.0.7427
 FROM alpine:3.17.3 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.62.2}
