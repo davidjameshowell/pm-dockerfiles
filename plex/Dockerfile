@@ -1,4 +1,5 @@
 ARG OUTPUT=/output
+ARG LSIO_IMAGE_VERSION=version-1.32.5.7349-8f4248874
 FROM alpine:edge AS builder
 RUN apk add --no-cache \
     autoconf \
@@ -83,7 +84,6 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image Build
-ARG LSIO_IMAGE_VERSION=version-1.32.5.7349-8f4248874
 FROM linuxserver/plex:$LSIO_IMAGE_VERSION
 ARG OUTPUT
 
