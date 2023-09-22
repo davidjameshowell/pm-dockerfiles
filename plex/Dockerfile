@@ -65,7 +65,6 @@ RUN apk add  xf86-video-amdgpu linux-firmware-amdgpu --no-cache --update-cache \
  && cp -a /lib/ld-musl-x86_64.so.1 "$OUTPUT/usr/lib" \
  && cp -a /lib/libz*.so* "$OUTPUT/usr/lib"
 
-ARG LSIO_IMAGE_VERSION=version-1.32.5.7349-8f4248874
 FROM alpine:3.18.3 AS buildstage
 
 ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.63.1}
@@ -84,6 +83,7 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image Build
+ARG LSIO_IMAGE_VERSION=version-1.32.5.7349-8f4248874
 FROM linuxserver/plex:$LSIO_IMAGE_VERSION
 ARG OUTPUT
 
@@ -125,3 +125,4 @@ RUN apt-get update \
  && apt-get clean
 
 HEALTHCHECK --interval=10s --timeout=8s CMD /healthcheck.sh || exit 1
+
