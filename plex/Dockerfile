@@ -83,7 +83,7 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image Build
-FROM linuxserver/plex:version-1.32.5.7349-8f4248874
+FROM linuxserver/plex:version-1.32.6.7557-1cf77d501
 ARG OUTPUT
 
 COPY --from=buildstage /root-layer/ /
