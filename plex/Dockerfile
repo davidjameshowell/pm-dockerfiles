@@ -67,7 +67,7 @@ RUN apk add  xf86-video-amdgpu linux-firmware-amdgpu --no-cache --update-cache \
 
 FROM alpine:3.18.3 AS buildstage
 
-ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.63.1}
+ARG RCLONE_VERSION=${RCLONE_VERSION:-v1.65.0}
 ARG RCLONE_URL=https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip
 ARG RCLONE_FILENAME=rclone-${RCLONE_VERSION}-linux-amd64
 ARG RCLONE_EXT=.zip
@@ -83,7 +83,7 @@ RUN apk --update add wget unzip && \
 COPY docker-mods/pm-base-tools/root/ /root-layer/
 
 ## Start LSIO Image Build
-FROM linuxserver/plex:version-1.32.6.7557-1cf77d501
+FROM linuxserver/plex:version-1.32.8.7639-fb6452ebf
 ARG OUTPUT
 
 COPY --from=buildstage /root-layer/ /
